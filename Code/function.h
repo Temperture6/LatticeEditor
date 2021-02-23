@@ -12,15 +12,15 @@ BOOL ClipBoard(char* srcString)
 {
 	BOOL bResult = FALSE;
 	DWORD dwLength = strlen(srcString);
-	HANDLE hGlobalMemory = GlobalAlloc(GHND, dwLength + 1); // ·ÖÅäÄÚ´æ
-	LPBYTE lpGlobalMemory = (LPBYTE)GlobalLock(hGlobalMemory); // Ëø¶¨ÄÚ´æ
+	HANDLE hGlobalMemory = GlobalAlloc(GHND, dwLength + 1); // åˆ†é…å†…å­˜
+	LPBYTE lpGlobalMemory = (LPBYTE)GlobalLock(hGlobalMemory); // é”å®šå†…å­˜
 	if (NULL != lpGlobalMemory)
 	{
 		strcpy((char*)lpGlobalMemory, srcString);
-		::GlobalUnlock(hGlobalMemory); // Ëø¶¨ÄÚ´æ¿é½âËø
-		::OpenClipboard(NULL); // ´ò¿ª¼ôÌù°å
-		::EmptyClipboard(); // Çå¿Õ¼ôÌù°å
-		::SetClipboardData(CF_TEXT, hGlobalMemory); // ½«ÄÚ´æÖĞµÄÊı¾İ·ÅÖÃµ½¼ôÌù°å
+		::GlobalUnlock(hGlobalMemory); // é”å®šå†…å­˜å—è§£é”
+		::OpenClipboard(NULL); // æ‰“å¼€å‰ªè´´æ¿
+		::EmptyClipboard(); // æ¸…ç©ºå‰ªè´´æ¿
+		::SetClipboardData(CF_TEXT, hGlobalMemory); // å°†å†…å­˜ä¸­çš„æ•°æ®æ”¾ç½®åˆ°å‰ªè´´æ¿
 		::CloseClipboard();
 
 		bResult = TRUE;
@@ -36,7 +36,7 @@ void GetLatticeName()
 	fstream namefile;
 	namefile.open("name.txt", ios::in);
 	if (!namefile)
-		strcpy_s(filename, "lattice"); //ÈôÎÄ¼ş²»´æÔÚ£¬Ê¹ÓÃÄ¬ÈÏÃû³Æ
+		strcpy_s(filename, "lattice"); //è‹¥æ–‡ä»¶ä¸å­˜åœ¨ï¼Œä½¿ç”¨é»˜è®¤åç§°
 	else
 	{
 		namefile >> name;
@@ -52,7 +52,7 @@ vector <int> getrange()
 	int rx = -1, ry = -1;
 	vector <int> result = { 0, 0 };
 	
-	//È·¶¨yÖá·¶Î§
+	//ç¡®å®šyè½´èŒƒå›´
 	for (int i = 7; i >= 0; i--)
 	{
 		for (int j = 0; j <= 7; j++)
@@ -67,7 +67,7 @@ vector <int> getrange()
 			break;
 	}
 
-	//È·¶¨xÖá·¶Î§
+	//ç¡®å®šxè½´èŒƒå›´
 	for (int k = 7; k >= 0; k--)
 	{
 		for (int l = 0; l <= 7; l++)
@@ -88,7 +88,7 @@ vector <int> getrange()
 
 void savefile(int rx, int ry)
 {
-	system("title ÕıÔÚ±£´æ...");
+	system("title æ­£åœ¨ä¿å­˜...");
 	ofstream file;
 	file.open(filename);
 
@@ -107,15 +107,15 @@ void savefile(int rx, int ry)
 	file << "};";
 
 	file.close();
-	system("title ±£´æÍê³É");
+	system("title ä¿å­˜å®Œæˆ");
 	Sleep(500);
-	system("title 8*8µãÕóÍ¼ĞÎ±à¼­Æ÷");
+	system("title 8*8ç‚¹é˜µå›¾å½¢ç¼–è¾‘å™¨");
 }
 
 void Copy(int rx, int ry)
 {
-	system("title ÕıÔÚ´¦Àí...");
-	char lattstr[110] = "char ";
+	system("title æ­£åœ¨å¤„ç†...");
+	char lattstr[110] = "byte ";
 	strcat_s(lattstr, filename);
 	strcat_s(lattstr, "[]={");
 	vector <char> remainvec;
@@ -147,10 +147,10 @@ void Copy(int rx, int ry)
 	strcat_s(lattstr, remain);
 
 	if (ClipBoard(lattstr))
-		system("title ÒÑ¸´ÖÆµ½¼ôÌù°å");
+		system("title å·²å¤åˆ¶åˆ°å‰ªè´´æ¿");
 	else
-		system("title ¸´ÖÆÊ§°Ü");
+		system("title å¤åˆ¶å¤±è´¥");
 
 	Sleep(500);
-	system("title 8*8µãÕóÍ¼ĞÎ±à¼­Æ÷");
+	system("title 8*8ç‚¹é˜µå›¾å½¢ç¼–è¾‘å™¨");
 }
